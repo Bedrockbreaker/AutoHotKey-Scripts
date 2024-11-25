@@ -1,0 +1,27 @@
+*/*
+
+/mmc-pack.json
+
+!/.minecraft/config
+!/.minecraft/journeymap
+!/.minecraft/mods
+!/.minecraft/.mode
+!/.minecraft/hei_bookmarks.ini
+!/.minecraft/options.txt
+!/.minecraft/optionsof.txt
+
+!/minecraft/config
+!/minecraft/journeymap
+!/minecraft/mods
+!/minecraft/.mode
+!/minecraft/hei_bookmarks.ini
+!/minecraft/options.txt
+!/minecraft/optionsof.txt
+
+!/server/config
+!/server/journeymap
+!/server/mods
+!/server/.mode
+!/server/server.properties
+
+*.jar diff=jarbinary

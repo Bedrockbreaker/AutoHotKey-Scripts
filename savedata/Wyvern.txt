@@ -1,0 +1,5 @@
+blackout:0
+rgbOverlayFlags:"0w"
+rgbProfIndex:-1
+wanikaniLastReminder:"202408281900"
+wanikaniLastVisited:"202403211252"
