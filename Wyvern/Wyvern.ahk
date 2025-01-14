@@ -271,8 +271,14 @@ F20:: {
 }
 
 ; DPI down (Mouse G7)
-F14:: {
+~F14:: {
 	windowExe := activateHoveredWindow()
+
+	if (windowExe == "javaw.exe") {
+		KeyWait("F14", "L")
+		return
+	}
+
 	switch(windowExe) {
 		case "UnrealEditor.exe":
 			Send("^!w")
@@ -285,9 +291,15 @@ F14:: {
 
 ; Tap Mouse Battery (Mouse G9)
 ; Hold Mouse Battery (Mouse G9)
-F15:: {
+~F15:: {
 	windowExe := activateHoveredWindow()
-	releasedBeforeTimeout := KeyWait(ThisHotkey, "L T0.2")
+
+	if (windowExe == "javaw.exe") {
+		KeyWait("F15", "L")
+		return
+	}
+
+	releasedBeforeTimeout := KeyWait("F15", "L T0.2")
 	if (releasedBeforeTimeout) {
 		switch(windowExe) {
 			case "Code.exe":
@@ -306,7 +318,7 @@ F15:: {
 			case "explorer.exe":
 				Send("^n")
 		}
-		KeyWait(ThisHotkey, "L")
+		KeyWait("F15", "L")
 	}
 }
 
