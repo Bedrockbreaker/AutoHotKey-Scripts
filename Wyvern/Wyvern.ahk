@@ -41,6 +41,7 @@ Serializer.Serialized("wanikaniLastVisited", &wanikaniLastVisited, "2000") ; Def
 Serializer.Serialized("wanikaniLastReminder", &wanikaniLastReminder, "2000")
 ;SetTimer(scheduler, 60000)
 updateRGBProfile()
+closeLiveCodingConsole()
 return
 
 :*?:`:flushed`:::😳
@@ -76,7 +77,8 @@ return
 	Send("^#{Right}")
 }
 
-; TODO: functions for DPI down, keyboard G6 (f13)
+; TODO: wrap each device in a dedicated F-key to share the same hotkey
+; TODO: functions for keyboard G6 (F13), keyboard G2 (F23)
 
 ; G1: Open VSCode, if it's not already open
 ; Otherwise, open workspace folder in explorer
@@ -166,7 +168,7 @@ F20:: {
 }
 #MaxThreadsPerHotkey 1
 
-; G-Shift + Mouse Button (G-Shift + Mouse G9): Color picker
+; G-Shift + Mouse Battery (G-Shift + Mouse G9): Color picker
 *F18:: {
 	global doColorPick := true
 
@@ -317,6 +319,8 @@ F20:: {
 				Send("^+{F5}")
 			case "explorer.exe":
 				Send("^n")
+			case "UnrealEditor.exe":
+				Send("^!+p")
 		}
 		KeyWait("F15", "L")
 	}
@@ -486,6 +490,18 @@ scheduler() {
 		SoundPlay(A_WorkingDir . "\Wyvern\ding low.wav")
 		updateRGBProfile()
 	}
+}
+
+closeLiveCodingConsole() {
+	WinWait("ahk_exe LiveCodingConsole.exe")
+
+	consoleHWND := WinWaitActive("ahk_exe LiveCodingConsole.exe",, 5)
+	if (consoleHWND != 0) {
+		WinWaitNotActive(consoleHWND)
+	}
+
+	WinClose("ahk_exe LiveCodingConsole.exe")
+	closeLiveCodingConsole()
 }
 
 ; Attempts to paste an image contained in the clipboard data. Returns whether the paste was successful or not
