@@ -174,6 +174,7 @@ F20:: {
 
 	static radius := 5
 	static pixelSize := 15
+	static offsetX := 1920 ; Account for monitor left of main display
 	static scanner := ShinsImageScanClass()
 
 	picker := Gui("+ToolWindow -Caption +AlwaysOnTop", "Wyvern Color Picker")
@@ -200,7 +201,7 @@ F20:: {
 	Loop {
 		if (!doColorPick) {
 			picker.Destroy()
-			A_Clipboard := Format("{:06X}", scanner.GetPixel(mouseX, mouseY))
+			A_Clipboard := Format("{:06X}", scanner.GetPixel(mouseX + offsetX, mouseY))
 			ToolTip()
 			break
 		}
@@ -208,8 +209,8 @@ F20:: {
 		MouseGetPos(&mouseX, &mouseY,, &hoveredWinHWND, 2)
 
 		; Scan
-		scanner.Update()
-		colorHex := scanner.GetPixel(mouseX, mouseY)
+		scanner.Update(-offsetX, 0)
+		colorHex := scanner.GetPixel(mouseX + offsetX, mouseY)
 		colorRGB := "(" . ((colorHex >> 16) & 0xFF) . ", " . ((colorHex >> 8) & 0xFF) . ", " . (colorHex & 0xFF) . ")"
 
 		ToolTip("#" . Format("{:06X}", colorHex) . "`n" . colorRGB . "`n`n" . "@(" . mouseX . ", " . mouseY . ")`n")
@@ -221,7 +222,7 @@ F20:: {
 				y := A_Index
 				Loop (radius * 2 + 1) {
 					x := A_Index
-					picker["Pixel" . x . "_" . y].Opt("+c" . Format("{:x}",scanner.GetPixel(mouseX + x - radius - 1, mouseY + y - radius - 1, true)))
+					picker["Pixel" . x . "_" . y].Opt("+c" . Format("{:x}",scanner.GetPixel(mouseX + x - radius - 1 + offsetX, mouseY + y - radius - 1, true)))
 				}
 			}
 		}
@@ -282,12 +283,20 @@ F20:: {
 	}
 
 	switch(windowExe) {
-		case "UnrealEditor.exe":
-			Send("^!w")
 		case "Discord.exe", "ms-teams.exe":
 			WinClose("ahk_exe " . windowExe)
 		default:
 			Send("^w")
+	}
+}
+
+; Shift+DPI down (Mouse G7)
+~+F14:: {
+	windowExe := activateHoveredWindow()
+
+	switch(windowExe) {
+		case "UnrealEditor.exe":
+			Send("^!w")
 	}
 }
 
@@ -297,6 +306,7 @@ F20:: {
 	windowExe := activateHoveredWindow()
 
 	if (windowExe == "javaw.exe") {
+		; Directly pass through
 		KeyWait("F15", "L")
 		return
 	}
