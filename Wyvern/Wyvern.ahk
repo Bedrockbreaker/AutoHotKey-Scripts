@@ -510,7 +510,9 @@ closeLiveCodingConsole() {
 		WinWaitNotActive(consoleHWND)
 	}
 
-	WinClose("ahk_exe LiveCodingConsole.exe")
+	if (WinExist("ahk_exe LiveCodingConsole.exe")) {
+		WinClose("ahk_exe LiveCodingConsole.exe")
+	}
 	closeLiveCodingConsole()
 }
 
