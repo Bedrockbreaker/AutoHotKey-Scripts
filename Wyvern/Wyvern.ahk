@@ -69,6 +69,11 @@ return
 	pasteFile(A_WorkingDir . "\Wyvern\letsgo.clip")
 }
 
+CapsLock & w:: Send("{Up}")
+CapsLock & a:: Send("{Left}")
+CapsLock & s:: Send("{Down}")
+CapsLock & d:: Send("{Right}")
+
 !#Left:: {
 	Send("^#{Left}")
 }
