@@ -508,16 +508,17 @@ scheduler() {
 }
 
 closeLiveCodingConsole() {
-	WinWait("ahk_exe LiveCodingConsole.exe")
+	consoleHWND := WinWait("ahk_exe LiveCodingConsole.exe")
+	WinActivate(consoleHWND)
 
-	consoleHWND := WinWaitActive("ahk_exe LiveCodingConsole.exe",, 5)
-	if (consoleHWND != 0) {
-		WinWaitNotActive(consoleHWND)
+	while (WinActive(consoleHWND)) {
+		Sleep(5000)
 	}
 
-	if (WinExist("ahk_exe LiveCodingConsole.exe")) {
-		WinClose("ahk_exe LiveCodingConsole.exe")
+	if (WinExist(consoleHWND)) {
+		WinClose(consoleHWND)
 	}
+
 	closeLiveCodingConsole()
 }
 
